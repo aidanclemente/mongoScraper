@@ -5,7 +5,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 // Require all models
-var db = require("./models");
+var db = require(".././models");
 
 const scrapePage = function(req, res) {
     axios.get("https://www.nytimes.com/").then(function(response) {
@@ -13,6 +13,8 @@ const scrapePage = function(req, res) {
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
+    // This is only grabbing the header for each articles
+    // $("p.summary") holds the summary of each article
     $("h2.story-heading").each(function(i, element) {
       // Save an empty result object
       var result = {};
@@ -21,6 +23,9 @@ const scrapePage = function(req, res) {
       result.title = $(this)
         .find("a")
         .text();
+    //   result.summary = $(this)
+    //     .find("p.summary")
+    //     .text();
       result.link = $(this)
         .find("a")
         .attr("href");

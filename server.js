@@ -7,9 +7,9 @@ var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
 
 // Require all models this will be moved with the routes
-var db = require("./models");
+//var db = require("./models");
 
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
@@ -30,11 +30,12 @@ mongoose.connect("mongodb://localhost/mongoScraper");
 // Apparently, all we need to require is the routes, and the each file from there requires the others
 
 
-var scrapePage = require("../scripts/crape.js");
+var scrapePage = require("./scripts/scrape.js");
 
 // ======= Routes =====
 
 // A GET route for scraping the nytimes website
+// This needs to be in one of the routes files
 app.get("/scrape", scrapePage);
 
 // Route for getting all Articles from the db
