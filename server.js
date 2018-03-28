@@ -6,25 +6,16 @@ var mongoose = require("mongoose");
 // Set Handlebars.
 var exphbs = require("express-handlebars");
 
-// Setting up handlebars as the view engine and setting the default page to home.handlebars
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-
-// Scraping tools
-// Axios is a promised-based http library, similar to jQuery's Ajax method
-// It works on the client and on the server
-var axios = require("axios");
-var cheerio = require("cheerio");
-
-// Require all models
+// Require all models this will be moved with the routes
 var db = require("./models");
 
 var PORT = 3000;
 
 // Initialize Express
 var app = express();
-
-// Configure middleware
+// Setting up handlebars as the view engine and setting the default page to home.handlebars
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
@@ -36,44 +27,15 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/mongoScraper");
 
-// Routes
+// Apparently, all we need to require is the routes, and the each file from there requires the others
 
-// A GET route for scraping the echoJS website
-app.get("/scrape", function(req, res) {
-  // First, we grab the body of the html with request
-  axios.get("https://www.nytimes.com/").then(function(response) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
-    var $ = cheerio.load(response.data);
 
-    // Now, we grab every h2 within an article tag, and do the following:
-    $("h2.story-heading").each(function(i, element) {
-      // Save an empty result object
-      var result = {};
+var scrapePage = require("../scripts/crape.js");
 
-      // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this)
-        .find("a")
-        .text();
-      result.link = $(this)
-        .find("a")
-        .attr("href");
+// ======= Routes =====
 
-      // Create a new Article using the `result` object built from scraping
-      db.Headline.create(result)
-        .then(function(dbHeadline) {
-          // View the added result in the console
-          console.log(dbHeadline);
-        })
-        .catch(function(err) {
-          // If an error occurred, send it to the client
-          return res.json(err);
-        });
-    });
-
-    // If we were able to successfully scrape and save an Article, send a message to the client
-    res.send("Scrape Complete");
-  });
-});
+// A GET route for scraping the nytimes website
+app.get("/scrape", scrapePage);
 
 // Route for getting all Articles from the db
 app.get("/articles", function(req, res) {

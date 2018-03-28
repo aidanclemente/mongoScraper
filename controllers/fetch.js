@@ -1,0 +1,1 @@
+// the controllers interact with the front end and the database interaction with the models
