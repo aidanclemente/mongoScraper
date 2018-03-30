@@ -1,3 +1,30 @@
-.jumbotron {
+body {
     background-image: url("https://i.ebayimg.com/images/g/BhEAAOSwqYBWn~~2/s-l300.jpg");
+}
+
+#scrapeArticles {
+    margin: 5px;
+    color: white;
+    display: inline-block;
+}
+
+#homeButton, #savedButton {
+    color: white;
+}
+
+.jumbotron {
+    background: white;
+}
+
+.saveArticle {
+    display: inline-block;
+    height: 38px;
+}
+
+.header {
+    color: black;
+}
+
+.card {
+    margin: 30px;
 }

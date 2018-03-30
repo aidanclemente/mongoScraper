@@ -2,12 +2,13 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var methodOverride = require("method-override");
 
 // Set Handlebars.
 var exphbs = require("express-handlebars");
 
 // Require all models this will be moved with the routes
-//var db = require("./models");
+var db = require("./models");
 
 var PORT = process.env.PORT || 3000;
 
@@ -33,17 +34,19 @@ mongoose.connect("mongodb://localhost/mongoScraper");
 var scrapePage = require("./scripts/scrape.js");
 
 // ======= Routes =====
+require("./routes/view/htmlRoutes")(app);
+// require("./routes/apiRoutes")(app);
 
 // A GET route for scraping the nytimes website
-// This needs to be in one of the routes files
 app.get("/scrape", scrapePage);
 
-// Route for getting all Articles from the db
+
+// -------- Articles ---------
+
+// Get all Articles from the db
 app.get("/articles", function(req, res) {
-  // TODO: Finish the route so it grabs all of the articles
+
   db.Headline.find({})
-    // This was not in the solution
-    // .populate("note")
     .then(function(dbHeadline) {
       res.json(dbHeadline);
     })
@@ -52,13 +55,24 @@ app.get("/articles", function(req, res) {
     });
 });
 
-// Route for grabbing a specific Article by id, populate it with it's note
+// Get all saved Articles
+app.get("/saved", function(req, res) {
+  console.log("Getting Saved Articles");
+
+  db.Headline.find({
+    saved: true
+  })
+  .then(function(dbHeadline) {
+    res.render("saved", {headline: dbArticle})
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+});
+
+// Get specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
-  // TODO
-  // ====
-  // Finish the route so it finds one article using the req.params.id,
-  // and run the populate method with "note",
-  // then responds with the article with the note included
+
   db.Headline.findOne({
     _id: req.params.id
   })
@@ -73,12 +87,23 @@ app.get("/articles/:id", function(req, res) {
 });
 
 // Route for saving/updating an Article's associated Note
+app.post("/articles/:id/:saved", function(req, res) {
+
+  db.Headline.findOneAndUpdate({ _id: req.params.id }, { saved: req.param.saved}, { new: true })
+
+     
+      .then(function(dbHeadline) {
+        console.log("Saved an article");
+        res.json(dbHeadline);
+      })
+      .catch(function(err) {
+        res.json(err);
+      });
+  }); 
+
+
+// Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
-  // TODO
-  // ====
-  // save the new note that gets posted to the Notes collection
-  // then find an article from the req.params.id
-  // and update it's "note" property with the _id of the new note
 
   // Create a new note and pass the req.body to the entry
   db.Note.create(req.body)
@@ -99,6 +124,7 @@ app.post("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
+
 
 // Start the server
 app.listen(PORT, function() {

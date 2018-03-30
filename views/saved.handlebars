@@ -1,9 +1,26 @@
-<div class="jumbotron">
-  <h1 class="display-4">This is the saved page</h1>
-  <p class="lead">This is supposed to show the saved articles. I think this was shown as a modal, though</p>
-  <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-  </p>
+    <div class="col-md-12">
+        {{#if headline}}
+            {{#each headline}}
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4>{{this.title}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p> {{this.summary}}</p>
+                        <a href={{this.link}} targt="_blank">{{this.link}}</a>
+                        <br><br>
+                        <button type="button" class="btn btn-success addNote" data-toggle="modal" data-target="#noteModal{{this._id}}" data-id={{this._id}}>Add a Note</button>
+                        <button type="button" class="btn btn-danger deleteArticle" data-saved="false" data-id={{this._id}}>Remove From Saved</button>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+        <div class="card card-default">
+            <div class="card-body text-center">
+                <h4 class="card-title">You have no saved articles right now.</h4>
+                <p class="card-text">Visit the homepage to find articles to save!</p>
+            </div>
+        </div>
+        {{/if}}
+    </div>
 </div>

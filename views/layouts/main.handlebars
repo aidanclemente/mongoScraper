@@ -3,21 +3,21 @@
 <head>
 	<meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="shortcut icon" href="/public/assets/img/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/public/assets/css/style.css" type="text/css" />
+    <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
     <title>Mongo Scraper</title>
     <script src="https://code.jquery.com/jquery.js"></script>
 	</head>
 	<body>
         <header>
             <nav class="nav fixed-top bg-info" id="nav-bar">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/saved">Saved Articles</a>
-                <a class="btn btn-alert" id="srapeArticles">Scrape New Articles</a>
+                <a class="nav-link" href="/" id="homeButton">Home</a>
+                <a class="nav-link" href="/saved" id="savedButton">Saved Articles</a>
+                <a class="btn btn-danger" id="scrapeArticles">Scrape New Articles</a>
             </nav>  
 
-            <div class="jumbotron">
-                <div class="container">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container container-fluid">
                     <h1 class="display-3 text-center">Mongo News Scraper</h1>
                     <p class="lead text-center">Get the latest articles from the New York Times Website. Save desired articles and take notes about saved articles.</p>
                 </div>

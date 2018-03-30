@@ -1,0 +1,6 @@
+<div class="input-group-append">
+    <form action="/saved/update/{{this.id}}?_method=PUT" method="POST">
+        <input type="hidden" name="saved" value="true">
+        <button type="button" class="btn btn-success saveArticle" data-id={{this._id}}>Save Article</button>
+    </form>
+</div>

@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 // This is similar to a Sequelize model
 var HeadlineSchema = new Schema({
 
-  headline: {
+  title: {
     type: String,
     required: true
   },
@@ -15,7 +15,7 @@ var HeadlineSchema = new Schema({
     type: String,
     required: true
   },
-  url: {
+  link: {
     type: String,
     required: true
   },
