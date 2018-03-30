@@ -2,7 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-var methodOverride = require("method-override");
+// var methodOverride = require("method-override");
 
 // Set Handlebars.
 var exphbs = require("express-handlebars");
@@ -14,14 +14,17 @@ var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
+
 // Setting up handlebars as the view engine and setting the default page to home.handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
+
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: true }));
+
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
 
@@ -87,11 +90,9 @@ app.get("/articles/:id", function(req, res) {
 });
 
 // Route for saving/updating an Article's associated Note
-app.post("/articles/:id/:saved", function(req, res) {
-
-  db.Headline.findOneAndUpdate({ _id: req.params.id }, { saved: req.param.saved}, { new: true })
-
-     
+app.put("/articles/:id/:saved", function(req, res) {
+ console.log(req.param.id)
+  db.Headline.findOneAndUpdate({ _id: req.params.id }, {$set:{ saved: req.params.saved}}, { new: true })
       .then(function(dbHeadline) {
         console.log("Saved an article");
         res.json(dbHeadline);

@@ -1,26 +1,63 @@
-    <div class="col-md-12">
-        {{#if headline}}
-            {{#each headline}}
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <h4>{{this.title}}</h4>
-                    </div>
-                    <div class="card-body">
-                        <p> {{this.summary}}</p>
-                        <a href={{this.link}} targt="_blank">{{this.link}}</a>
-                        <br><br>
-                        <button type="button" class="btn btn-success addNote" data-toggle="modal" data-target="#noteModal{{this._id}}" data-id={{this._id}}>Add a Note</button>
-                        <button type="button" class="btn btn-danger deleteArticle" data-saved="false" data-id={{this._id}}>Remove From Saved</button>
-                    </div>
-                </div>
-            {{/each}}
-        {{else}}
-        <div class="card card-default">
-            <div class="card-body text-center">
-                <h4 class="card-title">You have no saved articles right now.</h4>
-                <p class="card-text">Visit the homepage to find articles to save!</p>
-            </div>
+<div class="text-center">
+    <h1> Saved Articles</h1>
+</div>
+
+{{#if headline}}
+  {{#each headline}}
+    <div class="card">
+
+        <div class="card-header d-flex justify-content-between">
+            <a href={{this.link}} target="_blank"><h4 class="header">{{this.title}}</h4></a>
         </div>
-        {{/if}}
+
+        <div class="card-body">
+            <p> {{this.summary}}</p>
+            <br><br>
+            <button type="button" class="btn btn-success addNote" data-toggle="modal" data-target="#notesModal" data-id={{this._id}}>Add a Note</button>
+            <button type="button" class="btn btn-danger deleteArticle" data-saved="false" data-id={{this._id}}>Remove From Saved</button>
+        </div>
+
     </div>
+    {{/each}}            
+    {{else}}
+    
+    <div class="card card-default">
+        <div class="card-body text-center">
+            <h4 class="card-title">You have no saved articles right now.</h4>
+            <p class="card-text">Visit the homepage to find articles to save!</p>
+        </div>
+    </div>
+  
+{{/if}}
+
+<div class="modal fade" id="notesModal" tabindex="-1" role="dialog" aria-labelledby="notesModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="notesModalTitle">Notes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+	    	<ul class="list-group" id="notes-list"></ul>
+
+	        <form>
+	          <div class="form-group">
+	            <label for="note-text" class="col-form-label">New Note:</label>
+	            <textarea class="form-control" id="note-text"></textarea>
+	          </div>
+	        </form>
+
+	  </div>
+
+	  <div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  <button type="button" class="btn btn-primary" id="savenote">Save Note</button>
+	  </div>
+   </div>
+ </div>
 </div>

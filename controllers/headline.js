@@ -7,14 +7,19 @@ module.exports = {
             var hbsObject = {
                 headline: data
             }
-            console.log(hbsObject);
+            // console.log(hbsObject);
             res.render("home", hbsObject);    
         })
           
     },
     renderSaved: function(req, res) {
-        var hbsObject;
-        res.render("saved", hbsObject);
+        db.Headline.find({saved: true}, function(error, data) {
+            // console.log(data);
+            var hbsObject = {
+                headline: data
+            }
+            res.render("saved", hbsObject);
+        })
     }
 
 }

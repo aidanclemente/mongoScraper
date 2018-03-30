@@ -6,19 +6,25 @@ const scrapePage = function(req, res) {
     axios.get("https://www.nytimes.com/").then(function(response) {
 
         var $ = cheerio.load(response.data);
-        console.log("=============");
-        console.log(response.data);
-        $("h2.story-heading").each(function(i, element) {
+
+        $("article.theme-summary").each(function(i, element) {
             var result = {};
+            
             result.title = $(this)
+                .children("h2.story-heading")
                 .children("a")
                 .text();
             result.summary = $(this)
-                .children("p.summary")
+                .find(".summary")
                 .text();
             result.link = $(this)
+                .children("h2.story-heading")
                 .find("a")
                 .attr("href");
+
+            if ( (result.title && result.summary && result.link) ) {   
+                console.log(result)
+            }
 
       db.Headline.create(result)
         .then(function(dbHeadline) {
