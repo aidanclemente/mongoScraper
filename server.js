@@ -31,6 +31,29 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/mongoScraper");
 
+// ------- Database config with Mongoose -----
+// Define local MongoDB URI 
+var databaseUri = 'mongod://localhost/week18day3mongoose';
+// ---------------------------------
+
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI);
+} else {
+  mongoose.connect(databaseUri);
+}
+ var monDB = mongoose.connection;
+
+ // show any mongoose errors
+ monDB.on('error', function(err) {
+   console.log('Mongoose Error: ', err);
+ });
+
+ // once logged in to the database through mongoose, log a success message
+
+ monDB.once('open', function() {
+   console.log('Mongoose connnection successful.');
+ });
+
 var scrapePage = require("./scripts/scrape.js");
 
 // ======= Routes =====
